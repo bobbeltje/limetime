@@ -6,12 +6,23 @@ session_start();
 echo(make_head());
 
 echo("<div id='myDiv' style='height: 95vh; width: 100%'></div>");
+?>
 
-echo("<script>
-    make_plot(
-      ['2020-01-01', '2020-02-27', '2020-08-03', '2020-11-04', '2020-04-25'],
-      ['event a', 'something special', 'more speciality!', 'lunch', 'ww']
-      )</script>");
+<script>
+$(document).ready(function(){
+  $.getJSON('getjson.php', function(rows) {
+    x = [];
+    txt = [];
+    for (var i = 0; i < rows.length; i++) {
+      row = rows[i];
+      x.push(row['item']);
+      txt.push(row['date']);
+    }
+    make_plot(txt, x);
+  });
+});
+</script>
 
+<?php
 echo(make_tail());
 ?>
