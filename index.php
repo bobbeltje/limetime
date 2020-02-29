@@ -66,14 +66,14 @@ echo(make_head());
 <script>
 $(document).ready(function(){
   $.getJSON('getjson.php', function(rows) {
-    x = [];
+    y = [];
     txt = [];
     for (var i = 0; i < rows.length; i++) {
       row = rows[i];
-      x.push(row['item']);
-      txt.push(row['date']);
+      y.push(row['date']);
+      txt.push(row['item']);
     }
-    make_plot(txt, x);
+    make_plot(y, txt);
   });
 });
 </script>
