@@ -38,6 +38,8 @@ function make_plot(y, txt, id){
     max_date = max_date.toISOString().split('T')[0];
 
     var layout = {
+      title: false,
+      margin: {t:30},
       xaxis: {range : [0, 1], fixedrange: true, showgrid: false, zeroline: false, showticklabels: false},
       yaxis: {
           range: [max_date, today.toISOString().split('T')[0]],
