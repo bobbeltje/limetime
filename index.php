@@ -38,6 +38,15 @@ if ( isset($_POST['editItem']) && isset($_POST['editDate']) && isset($_POST['eID
     header( 'Location: index.php' ) ;
     return;
 }
+# delete event
+if ( isset($_POST['delEvent']) ) {
+    $sql = "DELETE FROM lt WHERE id = :delEvent";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array(':delEvent' => $_POST['delEvent']));
+    $_SESSION['success'] = 'Record deleted';
+    header( 'Location: index.php' ) ;
+    return;
+}
 
 echo(make_head());
 ?>
@@ -99,6 +108,14 @@ echo(make_head());
            <input class='btn btn-primary' type='submit' value='Update'>
         </form>
       </div>
+      
+      <div class="modal-footer">
+        <form method='post'>
+            <input id='delEvent' type='hidden' name='delEvent'>
+            <input type="submit" class="btn btn-danger" value='Delete event'>
+        </form>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
 
     </div>
   </div>
@@ -128,6 +145,7 @@ $(document).ready(function(){
         $('#eName').val(e.text);
         $('#eDate').val(e.y);
         $('#eID').val(e.customdata);
+        $('#delEvent').val(e.customdata);
         $('#editEventModal').modal('toggle');
     });
   });
