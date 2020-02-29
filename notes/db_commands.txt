@@ -1,0 +1,12 @@
+
+sudo mysql -u root
+show databases;
+CREATE TABLE lt (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT KEY,
+  item VARCHAR(128),
+  date DATE
+) ENGINE=InnoDB CHARSET=utf8;
+INSERT INTO lt (item, date) VALUES ('event q', '2020-09-03');
+INSERT INTO lt (item, date) VALUES ('ww', '2020-04-25');
+INSERT INTO lt (item, date) VALUES ('july', '2020-07-01');
+INSERT INTO lt (item, date) VALUES ('event', '2020-06-25');
