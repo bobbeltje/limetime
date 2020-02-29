@@ -61,6 +61,33 @@ echo(make_head());
   </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalTitle">Edit an event</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div style="padding: 20px">
+        <form method='post'>
+            <div class='form-group'>
+                <p>Event name: <input class='form-control' id='eName' type='text' name='item' required></p>
+            </div>
+            <div class='form-group'>
+                <input class='form-control' id='eDate' type='date' name='date' required>
+            </div>
+           <input class='btn btn-primary' type='submit' value='Add'>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- make plot -->
 <div id='myDiv' style='height: 95vh; width: 100%'></div>
 <script>
@@ -79,7 +106,12 @@ $(document).ready(function(){
     var myDiv = document.getElementById('myDiv');
     Plotly.newPlot('myDiv', l[0], l[1], l[2]);
     myDiv.on('plotly_click', function (data) {
-        console.log(data);
+        e = data.points[0];
+        console.log(e.customdata);
+        $('#editModalTitle').html('Update event: ' + e.text);
+        $('#eName').val(e.text);
+        $('#eDate').val(e.y);
+        $('#editEventModal').modal('toggle');
     });
   });
 });
