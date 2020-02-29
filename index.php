@@ -4,14 +4,14 @@ require_once "helpers.php";
 session_start();
 
 # alerts
-if ( isset($_SESSION['error']) ) {
-    echo '<p style="color:red">'.$_SESSION['error']."</p>\n";
-    unset($_SESSION['error']);
-}
-if ( isset($_SESSION['success']) ) {
-    echo '<p style="color:green">'.$_SESSION['success']."</p>\n";
-    unset($_SESSION['success']);
-}
+//~ if ( isset($_SESSION['error']) ) {
+    //~ echo '<p style="color:red">'.$_SESSION['error']."</p>\n";
+    //~ unset($_SESSION['error']);
+//~ }
+//~ if ( isset($_SESSION['success']) ) {
+    //~ echo '<p style="color:green">'.$_SESSION['success']."</p>\n";
+    //~ unset($_SESSION['success']);
+//~ }
 # new event
 if ( isset($_POST['item']) && isset($_POST['date']) ) {
     $sql = "INSERT INTO lt (item, date) VALUES (:item, :date)";
@@ -122,7 +122,7 @@ echo(make_head());
 </div>
 
 <!-- make plot -->
-<div id='myDiv' style='height: 80vh; width: 100%'></div>
+<div id='myDiv' style='height: 88vh; width: 100%'></div>
 <script>
 $(document).ready(function(){
   $.getJSON('getjson.php', function(rows) {
