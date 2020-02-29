@@ -48,10 +48,10 @@ echo(make_head());
       <div style="padding: 20px">
         <form method='post'>
             <div class='form-group'>
-                <p>Event name: <input class='form-control' type='text' name='item'></p>
+                <p>Event name: <input class='form-control' type='text' name='item' required></p>
             </div>
             <div class='form-group'>
-                <input class='form-control' type='date' name='date'>
+                <input class='form-control' type='date' name='date' required>
             </div>
            <input class='btn btn-primary' type='submit' value='Add'>
         </form>
