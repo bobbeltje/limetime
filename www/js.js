@@ -1,8 +1,9 @@
-function make_plot(y, txt){
+function make_plot(y, txt, id){
     var trace1 = {
       x: Array(y.length).fill(.15),
       y: y,
       text: txt,
+      customdata: id,
       hovertemplate: '%{y}' + '<br>%{text}',
       name: '',
       mode: 'markers+text',
@@ -48,6 +49,6 @@ function make_plot(y, txt){
     var config = {
         displayModeBar: false, responsive: true
     }
-      
-    Plotly.newPlot('myDiv', data, layout, config);
+    
+    return [data, layout, config];
 }

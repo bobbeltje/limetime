@@ -61,19 +61,26 @@ echo(make_head());
   </div>
 </div>
 
+<!-- make plot -->
 <div id='myDiv' style='height: 95vh; width: 100%'></div>
-
 <script>
 $(document).ready(function(){
   $.getJSON('getjson.php', function(rows) {
     y = [];
     txt = [];
+    id = [];
     for (var i = 0; i < rows.length; i++) {
       row = rows[i];
       y.push(row['date']);
       txt.push(row['item']);
+      id.push(row['id']);
     }
-    make_plot(y, txt);
+    l = make_plot(y, txt, id);
+    var myDiv = document.getElementById('myDiv');
+    Plotly.newPlot('myDiv', l[0], l[1], l[2]);
+    myDiv.on('plotly_click', function (data) {
+        console.log(data);
+    });
   });
 });
 </script>
