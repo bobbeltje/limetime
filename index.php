@@ -122,7 +122,7 @@ echo(make_head());
 </div>
 
 <!-- make plot -->
-<div id='myDiv' style='height: 95vh; width: 100%'></div>
+<div id='myDiv' style='height: 80vh; width: 100%'></div>
 <script>
 $(document).ready(function(){
   $.getJSON('getjson.php', function(rows) {
