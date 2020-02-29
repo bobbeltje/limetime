@@ -1,6 +1,6 @@
-function make_plot(x, y, txt){
+function make_plot(y, txt){
     var trace1 = {
-      x: x,
+      x: Array(y.length).fill(.15),
       y: y,
       text: txt,
       hovertemplate: '%{y}' + '<br>%{text}',
@@ -13,7 +13,7 @@ function make_plot(x, y, txt){
     var shapes = [
         {
           type: 'line',
-          x0: 0.25, x1: 0.25, xref:'paper',
+          x0: 0.15, x1: 0.15, xref:'paper',
           y0: 0, y1: 1, yref:'paper',
           line: {
             color: '#8c564b77',
@@ -25,8 +25,8 @@ function make_plot(x, y, txt){
     var data = [trace1];
 
     var layout = {
-      xaxis: {range : [0, 1], fixedrange: true},
-      yaxis: {autorange: "reversed"},
+      xaxis: {range : [0, 1], fixedrange: true, showgrid: false, zeroline: false, showticklabels: false},
+      yaxis: {autorange: "reversed", showgrid: false},
       shapes: shapes,
       hovermode: 'closest'
     }
