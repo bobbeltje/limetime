@@ -1,4 +1,5 @@
 function make_plot(y, txt){
+    var today = new Date();
     var dates = [];
     for (i = 0; i < y.length; i++){
         dates.push(new Date(y[i]));
@@ -13,6 +14,7 @@ function make_plot(y, txt){
       type: 'scatter',
       marker: {size: 50, color: '#2ca02c'}
     };
+    var data = [trace1];
     
     var shapes = [
         {
@@ -25,10 +27,21 @@ function make_plot(y, txt){
           }
         }
     ];
+    min_y = dates.findIndex(function(d) {
+        return d > today;
+    });
+    annotations = [];
+    for (i = 0; i < 4; i++){
+        annotations.push({
+            x: .25, xref: 'paper', xanchor: 'left',
+            y: 1 - i * .2 - .2, yref: 'paper', yanchor: 'top',
+            text: i+1 +') ' + txt[i + min_y] + ' (' + y[i + min_y] +')',
+            showarrow: false,
+            font: {size: 40, color: '#000'}
+        });
+    }
 
-    var data = [trace1];
     
-    today = new Date();
     max_date = new Date(Math.max.apply(null, dates));
     max_date.setDate(max_date.getDate() + 10);
     max_date = max_date.toISOString().split('T')[0];
@@ -39,6 +52,7 @@ function make_plot(y, txt){
           range: [max_date, today.toISOString().split('T')[0]],
           showgrid: false},
       shapes: shapes,
+      annotations: annotations,
       hovermode: 'closest'
     }
     

@@ -2,7 +2,7 @@
 require_once "pdo.php";
 session_start();
 header('Content-Type: application/json');
-$stmt = $pdo->query("SELECT item, date, id FROM lt");
+$stmt = $pdo->query("SELECT item, date, id FROM lt ORDER BY date");
 $rows = array();
 while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
   $rows[] = $row;
