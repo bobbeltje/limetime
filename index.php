@@ -12,7 +12,7 @@ if ( isset($_SESSION['success']) ) {
     echo '<p style="color:green">'.$_SESSION['success']."</p>\n";
     unset($_SESSION['success']);
 }
-# post
+# new event
 if ( isset($_POST['item']) && isset($_POST['date']) ) {
     $sql = "INSERT INTO lt (item, date) VALUES (:item, :date)";
     $stmt = $pdo->prepare($sql);
@@ -20,6 +20,21 @@ if ( isset($_POST['item']) && isset($_POST['date']) ) {
         ':item' => $_POST['item'],
         ':date' => $_POST['date']));
     $_SESSION['success'] = 'Record Added';
+    header( 'Location: index.php' ) ;
+    return;
+}
+# update event
+if ( isset($_POST['editItem']) && isset($_POST['editDate']) && isset($_POST['eID']) ) {
+    # delete old record
+    $sql = "UPDATE lt SET item = :editItem, date = :editDate WHERE id = :eID";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array(
+        ':editItem' => $_POST['editItem'],
+        ':editDate' => $_POST['editDate'],
+        ':eID' => $_POST['eID'])
+    );
+    
+    $_SESSION['success'] = 'Event updated!';
     header( 'Location: index.php' ) ;
     return;
 }
@@ -75,12 +90,13 @@ echo(make_head());
       <div style="padding: 20px">
         <form method='post'>
             <div class='form-group'>
-                <p>Event name: <input class='form-control' id='eName' type='text' name='item' required></p>
+                <p>Event name: <input class='form-control' id='eName' type='text' name='editItem' required></p>
             </div>
+            <input id='eID' type="hidden" name='eID'>
             <div class='form-group'>
-                <input class='form-control' id='eDate' type='date' name='date' required>
+                <input class='form-control' id='eDate' type='date' name='editDate' required>
             </div>
-           <input class='btn btn-primary' type='submit' value='Add'>
+           <input class='btn btn-primary' type='submit' value='Update'>
         </form>
       </div>
 
@@ -111,6 +127,7 @@ $(document).ready(function(){
         $('#editModalTitle').html('Update event: ' + e.text);
         $('#eName').val(e.text);
         $('#eDate').val(e.y);
+        $('#eID').val(e.customdata);
         $('#editEventModal').modal('toggle');
     });
   });
