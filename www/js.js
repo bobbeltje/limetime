@@ -1,4 +1,4 @@
-function make_plot(y, txt, id){
+function make_plot(y, txt, id, period){
     var trace1 = {
       x: Array(y.length).fill(.15),
       y: y,
@@ -28,14 +28,29 @@ function make_plot(y, txt, id){
 
     // get dates for range
     var today = new Date();
-    today.setDate(today.getDate() - 3);
-    var dates = [];
-    for (i = 0; i < y.length; i++){
-        dates.push(new Date(y[i]));
+    if (period == 'W'){
+        console.log('in W');
+        today.setDate(today.getDate() - 1);
+        var max_date = new Date();
+        max_date.setDate(max_date.getDate() + 9);
     }
-    max_date = new Date(Math.max.apply(null, dates));
-    max_date.setDate(max_date.getDate() + 10);
-    max_date = max_date.toISOString().split('T')[0];
+    if (period == 'M'){
+        console.log('in M');
+        today.setDate(today.getDate() - 2);
+        var max_date = new Date();
+        max_date.setDate(max_date.getDate() + 32);
+    }
+    if (period == 'A'){
+        console.log('in A');
+        today.setDate(today.getDate() - 5);
+        var dates = [];
+        for (i = 0; i < y.length; i++){
+            dates.push(new Date(y[i]));
+        }
+        max_date = new Date(Math.max.apply(null, dates));
+        max_date.setDate(max_date.getDate() + 10);
+        max_date = max_date.toISOString().split('T')[0];
+    }
 
     var layout = {
       title: false,
