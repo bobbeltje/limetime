@@ -1,4 +1,4 @@
-function make_plot(y, txt, id, period){
+function get_plot_data(y, txt, id, period){
     var trace1 = {
       x: Array(y.length).fill(.15),
       y: y,
@@ -29,19 +29,16 @@ function make_plot(y, txt, id, period){
     // get dates for range
     var today = new Date();
     if (period == 'W'){
-        console.log('in W');
         today.setDate(today.getDate() - 1);
         var max_date = new Date();
         max_date.setDate(max_date.getDate() + 9);
     }
     if (period == 'M'){
-        console.log('in M');
         today.setDate(today.getDate() - 2);
         var max_date = new Date();
         max_date.setDate(max_date.getDate() + 32);
     }
     if (period == 'A'){
-        console.log('in A');
         today.setDate(today.getDate() - 5);
         var dates = [];
         for (i = 0; i < y.length; i++){
@@ -54,7 +51,7 @@ function make_plot(y, txt, id, period){
 
     var layout = {
       title: false,
-      margin: {t:30},
+      margin: {t:30, b: 0},
       xaxis: {range : [0, 1], fixedrange: true, showgrid: false, zeroline: false, showticklabels: false},
       yaxis: {
           range: [max_date, today.toISOString().split('T')[0]],
@@ -68,4 +65,31 @@ function make_plot(y, txt, id, period){
     }
     
     return [data, layout, config];
+}
+function make_plot(){
+  var rb = $('[name="optradio"]:checked').closest('label').text();
+  $.getJSON('getjson.php', function(rows) {
+    y = [];
+    txt = [];
+    id = [];
+    for (var i = 0; i < rows.length; i++) {
+      row = rows[i];
+      y.push(row['date']);
+      txt.push(row['item']);
+      id.push(row['id']);
+    }
+    l = get_plot_data(y, txt, id, rb);
+    var myDiv = document.getElementById('myDiv');
+    Plotly.newPlot('myDiv', l[0], l[1], l[2]);
+    myDiv.on('plotly_click', function (data) {
+        e = data.points[0];
+        console.log(e.customdata);
+        $('#editModalTitle').html('Update event: ' + e.text);
+        $('#eName').val(e.text);
+        $('#eDate').val(e.y);
+        $('#eID').val(e.customdata);
+        $('#delEvent').val(e.customdata);
+        $('#editEventModal').modal('toggle');
+    });
+  });
 }

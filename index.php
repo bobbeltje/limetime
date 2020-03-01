@@ -57,38 +57,14 @@ echo(make_head());
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addEventModal">
   Add Event
 </button>
-
+<span style='padding-right: 50px;'></span>
 <label class="radio-inline"><input type="radio" name="optradio" checked>W</label>
 <label class="radio-inline"><input type="radio" name="optradio">M</label>
 <label class="radio-inline"><input type="radio" name="optradio">A</label>
 
 <script>
 $('input[type=radio][name=optradio]').change(function() {
-  var rb = $('[name="optradio"]:checked').closest('label').text();
-  $.getJSON('getjson.php', function(rows) {
-    y = [];
-    txt = [];
-    id = [];
-    for (var i = 0; i < rows.length; i++) {
-      row = rows[i];
-      y.push(row['date']);
-      txt.push(row['item']);
-      id.push(row['id']);
-    }
-    l = make_plot(y, txt, id, rb);
-    var myDiv = document.getElementById('myDiv');
-    Plotly.newPlot('myDiv', l[0], l[1], l[2]);
-    myDiv.on('plotly_click', function (data) {
-        e = data.points[0];
-        console.log(e.customdata);
-        $('#editModalTitle').html('Update event: ' + e.text);
-        $('#eName').val(e.text);
-        $('#eDate').val(e.y);
-        $('#eID').val(e.customdata);
-        $('#delEvent').val(e.customdata);
-        $('#editEventModal').modal('toggle');
-    });
-  });
+    make_plot();
 });
 </script>
 
@@ -156,33 +132,10 @@ $('input[type=radio][name=optradio]').change(function() {
 </div>
 
 <!-- make plot -->
-<div id='myDiv' style='height: 88vh; width: 100%'></div>
+<div id='myDiv' style='height: 85vh; width: 100%'></div>
 <script>
 $(document).ready(function(){
-  $.getJSON('getjson.php', function(rows) {
-    y = [];
-    txt = [];
-    id = [];
-    for (var i = 0; i < rows.length; i++) {
-      row = rows[i];
-      y.push(row['date']);
-      txt.push(row['item']);
-      id.push(row['id']);
-    }
-    l = make_plot(y, txt, id, 'W');
-    var myDiv = document.getElementById('myDiv');
-    Plotly.newPlot('myDiv', l[0], l[1], l[2]);
-    myDiv.on('plotly_click', function (data) {
-        e = data.points[0];
-        console.log(e.customdata);
-        $('#editModalTitle').html('Update event: ' + e.text);
-        $('#eName').val(e.text);
-        $('#eDate').val(e.y);
-        $('#eID').val(e.customdata);
-        $('#delEvent').val(e.customdata);
-        $('#editEventModal').modal('toggle');
-    });
-  });
+    make_plot();
 });
 </script>
 
