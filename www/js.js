@@ -51,7 +51,7 @@ function get_plot_data(y, txt, id, period){
 
     var layout = {
       title: false,
-      margin: {t:30, b: 0},
+      margin: {t:20, b: 0},
       xaxis: {range : [0, 1], fixedrange: true, showgrid: false, zeroline: false, showticklabels: false},
       yaxis: {
           range: [max_date, today.toISOString().split('T')[0]],

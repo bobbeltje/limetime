@@ -4,14 +4,37 @@ require_once "helpers.php";
 session_start();
 
 # alerts
-//~ if ( isset($_SESSION['error']) ) {
-    //~ echo '<p style="color:red">'.$_SESSION['error']."</p>\n";
-    //~ unset($_SESSION['error']);
-//~ }
+if ( isset($_SESSION['error']) ) {
+    echo '<p style="color:red">'.$_SESSION['error']."</p>\n";
+    unset($_SESSION['error']);
+}
 //~ if ( isset($_SESSION['success']) ) {
     //~ echo '<p style="color:green">'.$_SESSION['success']."</p>\n";
     //~ unset($_SESSION['success']);
 //~ }
+# logout
+if (isset($_POST['X'])){
+    session_destroy();
+    header( 'Location: index.php' ) ;
+    return;
+}
+# login
+if ( isset($_POST["account"]) && isset($_POST["pw"]) ) {
+    unset($_SESSION["account"]);  // Logout current user
+    $l = file_get_contents("/etc/php_pw.json");
+    $l = json_decode($l, true);
+    if ( $_POST['account'] == $l['USER_NAME'] && 
+    (password_verify($_POST['pw'], $l['USER_PW']))){
+        $_SESSION["account"] = $_POST["account"];
+        $_SESSION["success"] = "Logged in.";
+        header( 'Location: index.php' ) ;
+        return;
+    } else {
+        $_SESSION["error"] = "Incorrect password.";
+        header( 'Location: index.php' ) ;
+        return;
+    }
+}
 # new event
 if ( isset($_POST['item']) && isset($_POST['date']) ) {
     $sql = "INSERT INTO lt (item, date) VALUES (:item, :date)";
@@ -52,21 +75,6 @@ echo(make_head());
 ?>
 
 <div class='container-fluid'>
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addEventModal">
-  Add Event
-</button>
-<span style='padding-right: 50px;'></span>
-<label class="radio-inline"><input type="radio" name="optradio" checked>W</label>
-<label class="radio-inline"><input type="radio" name="optradio">M</label>
-<label class="radio-inline"><input type="radio" name="optradio">A</label>
-
-<script>
-$('input[type=radio][name=optradio]').change(function() {
-    make_plot();
-});
-</script>
 
 <!-- Modal -->
 <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -131,13 +139,42 @@ $('input[type=radio][name=optradio]').change(function() {
   </div>
 </div>
 
-<!-- make plot -->
-<div id='myDiv' style='height: 85vh; width: 100%'></div>
-<script>
-$(document).ready(function(){
-    make_plot();
-});
-</script>
+<?php
+if ( ! isset($_SESSION["account"]) ) { ?>
+<!-- need to login -->
+    <form method="post">
+    <p>Account: <input type="text" name="account" value=""></p>
+    <p>Password: <input type="password" name="pw" value=""></p>
+    <p><input type="submit" value="Log In">
+    </form>
+<?php } else { ?>
+<!-- normal view -->
+    <div style='position: fixed; top:0px; right: 0px'>
+        <form method='post'>
+            <input type='submit' class='btn btn-warning' value='X' name='X'>
+            </form>
+    </div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addEventModal">
+      Add Event
+    </button>
+    <span style='padding-right: 50px;'></span>
+    <label class="radio-inline"><input type="radio" name="optradio" checked>W</label>
+    <label class="radio-inline"><input type="radio" name="optradio">M</label>
+    <label class="radio-inline"><input type="radio" name="optradio">A</label>
+
+    <script>
+    $('input[type=radio][name=optradio]').change(function() {
+        make_plot();
+    });
+    </script>
+    <!-- make plot -->
+    <div id='myDiv' style='height: 85vh; width: 100%'></div>
+    <script>
+    $(document).ready(function(){
+        make_plot();
+    });
+    </script>
+<?php } ?>
 
 <?php
 echo(make_tail());
