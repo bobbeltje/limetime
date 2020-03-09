@@ -1,6 +1,6 @@
 function get_plot_data(y, txt, id, period){
     var trace1 = {
-      x: Array(y.length).fill(.15),
+      x: Array(y.length).fill(.05),
       y: y,
       text: txt,
       customdata: id,
@@ -10,14 +10,14 @@ function get_plot_data(y, txt, id, period){
       type: 'scatter',
       textposition: 'right',
       marker: {size: 15, color: '#2ca02c'},
-      textfont: {size: 25}
+      textfont: {size: 20}
     };
     var data = [trace1];
     
     var shapes = [
         {
           type: 'line',
-          x0: 0.15, x1: 0.15, xref:'paper',
+          x0: 0.05, x1: 0.05, xref:'paper',
           y0: 0, y1: 1, yref:'paper',
           line: {
             color: '#8c564b77',
@@ -51,7 +51,7 @@ function get_plot_data(y, txt, id, period){
 
     var layout = {
       title: false,
-      margin: {t:20, b: 0},
+      margin: {t:20, b: 0, r: 0},
       xaxis: {range : [0, 1], fixedrange: true, showgrid: false, zeroline: false, showticklabels: false},
       yaxis: {
           range: [max_date, today.toISOString().split('T')[0]],

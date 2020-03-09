@@ -168,7 +168,7 @@ if ( ! isset($_SESSION["account"]) ) { ?>
     });
     </script>
     <!-- make plot -->
-    <div id='myDiv' style='height: 85vh; width: 100%'></div>
+    <div id='myDiv' style='height: calc(100vh - 3rem); calc(100vw - 15px)'></div>
     <script>
     $(document).ready(function(){
         make_plot();
